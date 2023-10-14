@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useRef, useState } from "react";
 
 function App() {
-    const [activeSection, setActiveSection] = useState('');
+    const [activeSection, setActiveSection] = useState('home');
     const sections = useRef<NodeListOf<HTMLElement>>();
 
     const handleScroll = () => {
@@ -52,7 +52,7 @@ function App() {
                 <a className={activeSection === 'certifications' ? 'text-cyan-400' : ''} href="#certifications"><FontAwesomeIcon icon={faAward} size="xl"/></a>
             </nav>
             <main className="text-gray-200 bg-black">
-                <section data-section id="home" className="snap-start h-screen flex flex-col justify-center items-center outline-b-1">
+                <section data-section id="home" className="snap-start h-[100dvh] flex flex-col justify-center items-center outline-b-1">
                     <img className="w-60 mb-5 rounded-full aspect-square object-cover object-top" src="ich.jpg" />
                     <h1 className="text-2xl font-semibold">Full-Stack Web Developer</h1>
                     <p>React | Express | JavaScript | Python</p>
@@ -61,17 +61,17 @@ function App() {
                         <a className="hover:text-cyan-400" href="https://github.com/nicofreundt" target="_blank"><FontAwesomeIcon icon={faGithub} size="3x" /></a>
                     </div>
                 </section>
-                <section data-section id="work" className="snap-start h-screen flex justify-center items-center">
+                <section data-section id="work" className="snap-start h-[100dvh] flex justify-center items-center">
                     <h1 className="text-2xl font-semibold">Working Experience</h1>
                 </section>
-                <section data-section id="education" className="snap-start h-screen flex justify-center items-center">
+                <section data-section id="education" className="snap-start h-[100dvh] flex justify-center items-center">
                     <h1 className="text-2xl font-semibold">Education</h1>
                 </section>
-                <section data-section id="projects" className="snap-start h-screen flex justify-center items-center">
+                <section data-section id="projects" className="snap-start h-[100dvh] flex justify-center items-center">
                     <h1 className="text-2xl font-semibold">Projects</h1>
                 </section>
             </main>
-            <footer data-section id="certifications" className="snap-start h-screen flex justify-center items-center bg-black text-gray-200">
+            <footer data-section id="certifications" className="snap-start h-[100dvh] flex justify-center items-center bg-black text-gray-200">
                 <h1 className="text-2xl font-semibold">Certifications</h1>
             </footer>
         </>
