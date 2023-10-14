@@ -1,0 +1,68 @@
+{
+    "job_experience": [
+        {
+            "employer": "Deutsche Telekom AG",
+            "icon": "tmobile",
+            "roles": [
+                {
+                    "title": "Fachinformatiker für Anwendungsentwicklung",
+                    "type": "Azubi",
+                    "start": "09.2019",
+                    "end": "07.2022"
+                }
+            ]
+        },
+        {
+            "employer": "T-Systems International GmbH",
+            "icon": "tmobile",
+            "roles": [
+                {
+                    "title": "#youlearnSAP",
+                    "type": "Trainee",
+                    "start": "10.2022",
+                    "end": "09.2023"
+                },
+                {
+                    "title": "Junior SAP Developer",
+                    "type": "Fulltime",
+                    "start": "07.2022",
+                    "end": ""
+                }
+            ]
+        }
+    ],
+    "skills": {
+        "Languages": ["html5", "css3", "javascript", "typescript", "python", "dart", "kotlin"],
+        "Frameworks": ["react", "ionic", "express", "django", "flutter", "jetpackcompose"],
+        "JS Runtimes": ["nodedotjs", "bun"],
+        "Databases": ["sqlite", "mysql", "postgresql", "mongodb", "prisma"],
+        "Dev-Ops": ["git", "github", "docker", "linux", "archlinux"]
+    },
+    "certifications": [
+        {
+            "title": "Meta Full-Stack Engineer Certificate",
+            "authority": "Coursera & Meta",
+            "authority_slug": "meta",
+            "date": "07.2023",
+            "url": "https://www.credly.com/badges/04680219-76e6-41ee-9683-981571268eb8"
+        },{
+            "title": "SAP Certified Application Associate - Business Process Integration with SAP S/4HANA 2020",
+            "authority": "SAP",
+            "authority_slug": "sap",
+            "date": "11.2022",
+            "url": "https://www.credly.com/badges/0518c4ff-2a03-4fae-9e5e-2437c9e72ab0/linked_in_profile"
+        },{
+            "title": "SAP Certified Associate - SAP Activate Project Manager",
+            "authority": "SAP",
+            "authority_slug": "sap",
+            "date": "11.2022",
+            "url": "https://www.credly.com/badges/9ba55b77-412f-41da-90ae-b9a3cbaf63ed/linked_in_profile"
+        },{
+            "title": "CodinGame Certification - CODING_SPEED - LEGEND",
+            "authority": "CodinGame",
+            "authority_slug": "codingame",
+            "date": "10.2022",
+            "url": "https://www.codingame.com/certification/xtzY9R7WPgxSi8f-NmSEOg"
+        }
+    ]
+}
