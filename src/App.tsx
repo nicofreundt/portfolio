@@ -15,7 +15,7 @@ function App() {
             const sectionOffsetTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
 
-            if (pageYOffset >= sectionOffsetTop && pageYOffset < sectionOffsetTop + sectionHeight) {
+            if (pageYOffset >= sectionOffsetTop-10 && pageYOffset < sectionOffsetTop + sectionHeight) {
                 newActiveSection = section.id;
             }
         });
@@ -45,11 +45,11 @@ function App() {
                 </nav>
             </header>
             <nav className="fixed bottom-0 bg-black text-white border-t-[0.01px] border-cyan-400 border-opacity-25 w-full p-5 flex justify-around items-center lg:sr-only">
-                <a className={['home', ''].includes(activeSection) ? 'text-cyan-400' : ''} href="#"><FontAwesomeIcon icon={faHome} /></a>
-                <a className={activeSection === 'work' ? 'text-cyan-400' : ''} href="#work"><FontAwesomeIcon icon={faBriefcase} /></a>
-                <a className={activeSection === 'education' ? 'text-cyan-400' : ''} href="#education"><FontAwesomeIcon icon={faSchool} /></a>
-                <a className={activeSection === 'projects' ? 'text-cyan-400' : ''} href="#projects"><FontAwesomeIcon icon={faLaptopCode} /></a>
-                <a className={activeSection === 'certifications' ? 'text-cyan-400' : ''} href="#certifications"><FontAwesomeIcon icon={faAward} /></a>
+                <a className={['home'].includes(activeSection) ? 'text-cyan-400' : ''} href="#"><FontAwesomeIcon icon={faHome} size="xl"/></a>
+                <a className={activeSection === 'work' ? 'text-cyan-400' : ''} href="#work"><FontAwesomeIcon icon={faBriefcase} size="xl"/></a>
+                <a className={activeSection === 'education' ? 'text-cyan-400' : ''} href="#education"><FontAwesomeIcon icon={faSchool} size="xl"/></a>
+                <a className={activeSection === 'projects' ? 'text-cyan-400' : ''} href="#projects"><FontAwesomeIcon icon={faLaptopCode} size="xl"/></a>
+                <a className={activeSection === 'certifications' ? 'text-cyan-400' : ''} href="#certifications"><FontAwesomeIcon icon={faAward} size="xl"/></a>
             </nav>
             <main className="text-gray-200 bg-black">
                 <section data-section id="home" className="snap-start h-screen flex flex-col justify-center items-center outline-b-1">
@@ -57,8 +57,8 @@ function App() {
                     <h1 className="text-2xl font-semibold">Full-Stack Web Developer</h1>
                     <p>React | Express | JavaScript | Python</p>
                     <div className="flex mt-5 gap-5">
-                        <a href="https://www.linkedin.com/in/nicofreundt/" target="_blank"><FontAwesomeIcon icon={faLinkedin} size="3x" /></a>
-                        <a href="https://github.com/nicofreundt" target="_blank"><FontAwesomeIcon icon={faGithub} size="3x" /></a>
+                        <a className="hover:text-cyan-400" href="https://www.linkedin.com/in/nicofreundt/" target="_blank"><FontAwesomeIcon icon={faLinkedin} size="3x" /></a>
+                        <a className="hover:text-cyan-400" href="https://github.com/nicofreundt" target="_blank"><FontAwesomeIcon icon={faGithub} size="3x" /></a>
                     </div>
                 </section>
                 <section data-section id="work" className="snap-start h-screen flex justify-center items-center">
