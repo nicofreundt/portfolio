@@ -1,9 +1,10 @@
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import { faStar } from "@fortawesome/free-regular-svg-icons";
-import { faAward, faBriefcase, faChevronDown, faChevronLeft, faChevronRight, faCodeFork, faHome, faLaptopCode, faSchool } from "@fortawesome/free-solid-svg-icons"
+import { faAward, faBriefcase, faChevronDown, faChevronLeft, faChevronRight, faCircle, faCodeFork, faHome, faLaptopCode, faSchool } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useRef, useState } from "react";
 import portfolio from "./assets/portfolio.json";
+import colors from "./assets/colors.json";
 import { Project } from "./assets/types";
 
 function App() {
@@ -11,6 +12,8 @@ function App() {
     const [projects, setProjects] = useState<Project[]>();
     const [page, setPage] = useState(0);
     const sections = useRef<NodeListOf<HTMLElement>>();
+    const projectSections = useRef<NodeListOf<HTMLElement>>();
+    const listRef = useRef<HTMLElement>(null);
 
     const handleScroll = () => {
         const pageYOffset = window.pageYOffset;
@@ -28,16 +31,42 @@ function App() {
         setActiveSection(newActiveSection);
     };
 
+    const handleXScroll = () => {
+        const elementXOffset = document.getElementById('projects')!.scrollLeft;
+        let newActiveProject = '';
+
+        projectSections.current!.forEach((section) => {
+            const sectionOffsetLeft = section.offsetLeft;
+            const sectionWidth = section.offsetWidth;
+            if (elementXOffset >= sectionOffsetLeft && elementXOffset < sectionOffsetLeft + sectionWidth) {
+                newActiveProject = section.id;
+            }
+        });
+
+        if (newActiveProject) {
+            setPage(Number(newActiveProject.split('-')[1]));
+        }
+    };
+
     history.replaceState({}, '', `#${activeSection}`)
 
     useEffect(() => {
         sections.current = document.querySelectorAll('[data-section]');
         window.addEventListener('scroll', handleScroll);
-
+        
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+    
+    useEffect(() => {
+        projectSections.current = listRef.current?.querySelectorAll('[data-project]');
+        document.getElementById('projects')!.addEventListener('scroll', handleXScroll);
+
+        return () => {
+            document.getElementById('projects')!.removeEventListener('scroll', handleXScroll);
+        };
+    }, [projects]);
 
     useEffect(() => {
         fetch('https://api.github.com/users/nicofreundt/repos', {
@@ -85,9 +114,9 @@ function App() {
                         a.roles.reduce((acc, r) => Math.max(Number(r.start.split('.')[1]), acc), 0)
                     ))
                     .map(v => (
-                        <div className="flex flex-col self-center w-[300px] md:w-[400px]">
+                        <div key={v.employer} className="flex flex-col self-center w-[300px] md:w-[400px]">
                             <h2 className="text-lg mb-4 whitespace-nowrap font-semibold flex gap-5 items-center"><img height="32" width="32" src={`https://cdn.simpleicons.org/${v.icon}`} />{v.employer}</h2>
-                            {v.roles.sort((a, b) => Number((b.end ? b.end : '12.9999').split('.')[1]) - Number((a.end ? a.end : '12.9999').split('.')[1])).map(r => <div className="ml-[15px] pl-10 border-l-2 border-solid flex flex-col py-2">
+                            {v.roles.sort((a, b) => Number((b.end ? b.end : '12.9999').split('.')[1]) - Number((a.end ? a.end : '12.9999').split('.')[1])).map(r => <div key={r.title} className="ml-[15px] pl-10 border-l-2 border-solid flex flex-col py-2">
                                 <span className="text-lg lg:whitespace-nowrap font-bold">{r.title}</span>
                                 <span className="font-semibold italic">{r.type}</span>
                                 <span>{r.start} - {r.end ? r.end : "Today"}</span>
@@ -97,7 +126,7 @@ function App() {
                 </section>
                 <section data-section id="skills" className="snap-start h-[100dvh] flex flex-col justify-center items-center gap-5">
                     <div className="flex gap-8 flex-col">
-                        {Object.entries(portfolio.skills).sort(([, b], [, d]) => d.length - b.length).map(([k, v]) => <div className="flex flex-col gap-2">
+                        {Object.entries(portfolio.skills).sort(([, b], [, d]) => d.length - b.length).map(([k, v]) => <div key={k} className="flex flex-col gap-2">
                             <h2 className="text-xl font-semibold text-center">{k}</h2>
                             <div className="flex gap-5 justify-center">
                                 {v.map(e => <img key={e} height="32" width="32" src={`https://cdn.simpleicons.org/${e}/AAFFFF`} /> )}
@@ -105,27 +134,29 @@ function App() {
                         </div>)}
                     </div>
                 </section>
-                <section data-section id="projects" className="snap-start h-[100dvh] flex flex-col gap-5 justify-center items-center">
-                    {projects?.sort((a, b) => new Date(`${b.updated_at}`).getTime() - new Date(`${a.updated_at}`).getTime()).slice(page*3, page*3+3).map(project => <article className="bg-black bg-opacity-25 p-5 w-[300px] rounded-lg">
-                        <a href={`${project.html_url}`} target="_blank"><h2 className="text-xl font-semibold">{project.name}</h2></a>
-                        <p>{project.description}</p>
-                        <div className="flex justify-between mt-5">
-                            <span>{project.language}</span>
-                            <div className="flex gap-10">
-                                <span>{`${project.stargazers_count}`} <FontAwesomeIcon icon={faStar} /></span>
-                                <span>{`${project.forks}`} <FontAwesomeIcon icon={faCodeFork} /></span>
+                <section data-section id="projects" ref={listRef} className="no-scrollbar snap-start h-[100dvh] flex flex-row gap-5 justify-start items-center overflow-scroll scroll-smooth snap-x snap-mandatory">
+                    {projects?.sort((a, b) => new Date(`${b.pushed_at}`).getTime() - new Date(`${a.pushed_at}`).getTime()).map((project, index) => <section data-project id={`project-${index}`} key={project.name} className="snap-center w-full flex-shrink-0 flex justify-center">
+                        <div className="bg-black bg-opacity-25 w-[80%] p-5 rounded-lg lg:w-[600px]">
+                            <a href={`${project.html_url}`} target="_blank"><h2 className="text-xl font-semibold">{project.name}</h2></a>
+                            <p>{project.description}</p>
+                            <div className="flex justify-between mt-5">
+                                <span><FontAwesomeIcon style={{color: `${colors[project.language as keyof typeof colors].color}`}} icon={faCircle} /> {project.language}</span>
+                                <div className="flex gap-10">
+                                    <span>{`${project.stargazers_count}`} <FontAwesomeIcon icon={faStar} /></span>
+                                    <span>{`${project.forks}`} <FontAwesomeIcon icon={faCodeFork} /></span>
+                                </div>
                             </div>
                         </div>
-                    </article>)}
-                    {typeof projects !== 'undefined' && projects?.length > 3 && activeSection === 'projects' && <div className="fixed flex items-center gap-8 bottom-20">
-                        <button disabled={page <= 0} className="disabled:border-gray-600 disabled:text-gray-600 border-solid border-2 p-3 flex rounded-full aspect-square items-center" onClick={() => setPage((num) => num - 1)}><FontAwesomeIcon icon={faChevronLeft} /></button>
-                        <span className="text-xl">{page + 1}</span>
-                        <button disabled={page >= projects.length / 3 - 1} className="disabled:border-gray-600 disabled:text-gray-600 border-solid border-2 p-3 flex rounded-full aspect-square items-center" onClick={() => setPage((num) => num + 1)}><FontAwesomeIcon icon={faChevronRight} /></button>
+                    </section>)}
+                    {typeof projects !== 'undefined' && projects?.length > 3 && activeSection === 'projects' && <div className="fixed flex items-center justify-center gap-8 bottom-20 w-full">
+                        <button disabled={page <= 0} className="disabled:border-gray-600 disabled:text-gray-600 border-solid border-2 p-3 flex rounded-full aspect-square items-center" onClick={() => {document.getElementById('projects')?.scrollTo(document.getElementById(`project-${page-1}`)?.offsetLeft!, document.getElementById(`project-${page-1}`)?.offsetTop!)}}><FontAwesomeIcon icon={faChevronLeft} /></button>
+                        <span className="text-xl">{page + 1} / {projects.length}</span>
+                        <button disabled={page >= projects.length - 1} className="disabled:border-gray-600 disabled:text-gray-600 border-solid border-2 p-3 flex rounded-full aspect-square items-center" onClick={() => {document.getElementById('projects')?.scrollTo(document.getElementById(`project-${page + 1}`)?.offsetLeft!, document.getElementById(`project-${page + 1}`)?.offsetTop!)}}><FontAwesomeIcon icon={faChevronRight} /></button>
                     </div>}
                 </section>
             </main>
             <footer data-section id="certifications" className="snap-start h-[100dvh] flex flex-col gap-5 justify-center items-center text-gray-200">
-                {portfolio.certifications.map(cert => <div className="w-[300px] lg:w-[600px] flex flex-col gap-2 bg-black bg-opacity-25 p-5 rounded-lg">
+                {portfolio.certifications.map(cert => <div key={cert.url} className="w-[300px] lg:w-[600px] flex flex-col gap-2 bg-black bg-opacity-25 p-5 rounded-lg">
                     <a href={cert.url} target="_blank" className="hover:text-cyan-400"><span className="text-md font-bold">{cert.title}</span></a>
                     <div className="flex justify-between items-center">
                         <span className="font-semibold italic flex gap-2 items-center"><img height="32" width="32" src={`https://cdn.simpleicons.org/${cert.authority_slug}/AAFFFF`} />{cert.authority}</span>
