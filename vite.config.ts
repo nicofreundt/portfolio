@@ -9,7 +9,7 @@ export default defineConfig({
     react(), 
     VitePWA({ 
       registerType: "autoUpdate", 
-      includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "android-icon-192x192.png"],
       devOptions: { enabled: true },
       manifest: {
         name: "My Portfolio",
@@ -23,7 +23,7 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/android-chrome-192x192.png",
+            src: "/android-icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
