@@ -1,7 +1,30 @@
 services:
-  server:
-    image: ghcr.io/nicofreundt/portfolio/portfolio:latest
-    container_name: portfolio
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
     ports:
-      - 3000:3000
-      
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  portfolio:
+    image: ghcr.io/nicofreundt/portfolio/portfolio:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.guestbook.rule=Host(`192.168.2.215`)"
+      - "com.centurylinklabs.watchtower.enable=true"
+    deploy:
+      mode: replicated
+      replicas: 3
+    restart: always
