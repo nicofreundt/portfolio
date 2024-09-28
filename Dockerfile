@@ -26,4 +26,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Command to serve the app using HTTP server
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
