@@ -2,7 +2,8 @@
 FROM node:16-alpine
 
 # Set env variable
-ENV VITE_API_TOKEN=${VITE_API_TOKEN}
+ARG TOKEN=my_api_token
+ENV VITE_API_TOKEN=$TOKEN
 
 # Set the working directory in the container
 WORKDIR /app
