@@ -30,9 +30,21 @@ services:
     image: ghcr.io/nicofreundt/portfolio/portfolio:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portfolio.rule=Host(`freundt.dev`)"
+
+      # Handles requests for www.freundt.dev
+      - "traefik.http.routers.portfolio.rule=Host(`www.freundt.dev`)"
       - "traefik.http.routers.portfolio.entrypoints=websecure"
       - "traefik.http.routers.portfolio.tls.certresolver=myresolver"
+      
+      # Handles redirect from freundt.dev to www.freundt.dev
+      - "traefik.http.routers.redirect-freundt-dev.rule=Host(`freundt.dev`)"
+      - "traefik.http.middlewares.redirect-to-www.redirectregex.regex=^https://freundt.dev(.*)"
+      - "traefik.http.middlewares.redirect-to-www.redirectregex.replacement=https://www.freundt.dev$${1}"
+      - "traefik.http.middlewares.redirect-to-www.redirectregex.permanent=true"
+      - "traefik.http.routers.redirect-freundt-dev.middlewares=redirect-to-www"
+      - "traefik.http.routers.redirect-freundt-dev.entrypoints=websecure"
+      - "traefik.http.routers.redirect-freundt-dev.tls.certresolver=myresolver"
+      
       - "com.centurylinklabs.watchtower.enable=true"
     deploy:
       mode: replicated
