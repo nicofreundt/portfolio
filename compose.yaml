@@ -30,9 +30,9 @@ services:
     image: ghcr.io/nicofreundt/portfolio/portfolio:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.guestbook.rule=Host(`freundt.dev`)"
-      - "traefik.http.routers.guestbook.entrypoints=websecure"
-      - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
+      - "traefik.http.routers.portfolio.rule=Host(`freundt.dev`)"
+      - "traefik.http.routers.portfolio.entrypoints=websecure"
+      - "traefik.http.routers.portfolio.tls.certresolver=myresolver"
       - "com.centurylinklabs.watchtower.enable=true"
     deploy:
       mode: replicated
