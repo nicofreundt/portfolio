@@ -2,7 +2,7 @@
     "job_experience": [
         {
             "employer": "Deutsche Telekom AG",
-            "icon": "tmobile",
+            "icon": "deutschetelekom",
             "roles": [
                 {
                     "title": "Fachinformatiker für Anwendungsentwicklung",
@@ -14,7 +14,7 @@
         },
         {
             "employer": "T-Systems International GmbH",
-            "icon": "tmobile",
+            "icon": "deutschetelekom",
             "roles": [
                 {
                     "title": "#youlearnSAP",
