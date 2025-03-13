@@ -11,6 +11,7 @@ export default defineConfig({
       registerType: "autoUpdate", 
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "android-icon-192x192.png"],
       devOptions: { enabled: true },
+      selfDestroying: true,
       manifest: {
         name: "My Portfolio",
         short_name: "Portfolio",
